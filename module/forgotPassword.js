@@ -2,14 +2,16 @@ const usersSchema = require("../models/usersModel");
 const bcrypt = require("bcrypt");
 module.exports = async (req, res) => {
   try {
+    //check email of user
     const verifyEmail = await usersSchema.find({
       email_Id: req.body.email_Id,
     });
     if (verifyEmail.length !== 0) {
       const confirmPassword = req.body.confirmPassword;
-
       if (req.body.newPassword === confirmPassword) {
+        //bcrypt new password
         req.body.newPassword = await bcrypt.hash(req.body.newPassword, 8);
+        //change the forgot password
         const savePassword = await usersSchema.findByIdAndUpdate(
           { _id: req.params._id },
           {

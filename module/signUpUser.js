@@ -2,10 +2,12 @@ const signUpSchema = require("../models/usersModel");
 const jwt = require("jsonwebtoken");
 module.exports = async (req, res) => {
   try {
+    //check user's email
     const verifyEmail = await signUpSchema.find({
       email_Id: req.body.email_Id,
     });
     if (verifyEmail.length === 0) {
+      //save user's data
       const signUpUser = await new signUpSchema({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -15,6 +17,7 @@ module.exports = async (req, res) => {
         age: req.body.age,
       });
       await signUpUser.save();
+      //create jwt token
       jwt.sign(
         { signUpUser },
         "secretkey",

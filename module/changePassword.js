@@ -4,19 +4,22 @@ module.exports = async (req, res) => {
   try {
     const verifyEmail = await usersSchema.find({ email_Id: req.body.email_Id });
     if (verifyEmail.length !== 0) {
+      //compare password
       const comparePassword = bcrypt.compare(
         req.body.password,
         verifyEmail[0].password
       );
       if (comparePassword) {
-        // const newPassword = req.body.newPassword;
+        //bcrypt new password
         req.body.newPassword = await bcrypt.hash(req.body.newPassword, 8);
+        //update password
         const changePassword = await usersSchema.findByIdAndUpdate(
           { _id: req.params._id },
           {
             $set: { password: req.body.newPassword },
           }
         );
+        await changePassword.save();
         return res.status(200).json({
           message: "password changed successfully",
           changePassword,

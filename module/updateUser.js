@@ -1,6 +1,7 @@
 const usersSchema = require("../models/usersModel");
 module.exports = async (req, res) => {
   try {
+    //update user's detail
     const updateUser = await usersSchema.findByIdAndUpdate(
       { _id: req.params._id },
       {

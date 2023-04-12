@@ -3,15 +3,18 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 module.exports = async (req, res) => {
   try {
+    //check email of user
     const verifyEmail = await signUpSchema.find({
       email_Id: req.body.email_Id,
     });
     if (verifyEmail.length !== 0) {
+      //check password
       const comparePassword = bcrypt.compare(
         req.body.password,
         verifyEmail[0].password
       );
       if (comparePassword) {
+        //create jwt token
         jwt.sign(
           { email_Id: verifyEmail[0].email_Id, _id: verifyEmail[0]._id },
           "secretkey",
