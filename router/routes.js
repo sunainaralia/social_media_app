@@ -1,0 +1,18 @@
+const express = require("express");
+const router = express.Router();
+const verifyToken = require("../module/verifyToken");
+const signUpRouter = require("../module/signUpUser");
+const loginRouter = require("../module/loginUser");
+const findUserRouter = require("../module/findAllUser");
+const updateUser = require("../module/updateUser");
+const deleteUser = require("../module/deleteUser");
+const forgotPassword = require("../module/forgotPassword");
+const changePassword = require("../module/changePassword");
+router.post("/signUp", signUpRouter);
+router.post("/login", loginRouter);
+router.get("/findAllUser", findUserRouter);
+router.put("/updateUser/:_id", verifyToken, updateUser);
+router.delete("/deleteuser/:_id", verifyToken, deleteUser);
+router.put("/forgotPassword/:_id", verifyToken, forgotPassword);
+router.put("/changePassword/:_id", verifyToken, changePassword);
+module.exports = router;
